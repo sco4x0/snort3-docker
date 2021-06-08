@@ -17,7 +17,7 @@ docker run -d --name snort3 snort3
 ## 使用
 
 ```
-docker-compose exec snort bash
+docker exec -it snort3 bash
 snort -A alert_fast -k none -q -c /usr/local/etc/snort/snort.lua -R /opt/rules/local.rules --pcap-dir=/opt/pcap --pcap-show
 ```
 
