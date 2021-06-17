@@ -4,9 +4,8 @@ MAINTAINER 4uuu Nya <i@qvq.im>
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN sed -i "s/archive.ubuntu.com/mirrors.aliyun.com/g" /etc/apt/sources.list && \
-    sed -i "s/security.ubuntu.com/mirrors.aliyun.com/g" /etc/apt/sources.list && \
-    apt update && apt dist-upgrade -y
-RUN apt install -y build-essential autotools-dev libdumbnet-dev libluajit-5.1-dev libpcap-dev \
+    apt update && apt dist-upgrade -y && \
+    apt install -y build-essential autotools-dev libdumbnet-dev libluajit-5.1-dev libpcap-dev \
     zlib1g-dev pkg-config libhwloc-dev cmake liblzma-dev openssl libssl-dev cpputest libsqlite3-dev \
     libtool uuid-dev git autoconf bison flex libcmocka-dev libnetfilter-queue-dev libunwind-dev \
     libmnl-dev ethtool && apt clean
@@ -32,13 +31,13 @@ RUN apt install python -y && \
 ADD ./docker/flatbuffers-v1.12.0.tar.gz /docker/
 WORKDIR /docker/flatbuffers-build
 RUN cmake ../flatbuffers-1.12.0 && make && make install
-ADD ./docker/libdaq.tar.gz /docker/
-WORKDIR /docker/libdaq
+ADD ./docker/libdaq-3.0.0.tar.gz /docker/
+WORKDIR /docker/libdaq-3.0.0
 RUN ./bootstrap && ./configure && make && make install && ldconfig
 ADD ./docker/snort3.tar.gz /docker/
-WORKDIR /docker/snort3
+WORKDIR /docker/snort3-3.1.0.0
 RUN ./configure_cmake.sh --prefix=/usr/local --enable-tcmalloc --enable-large-pcap
-WORKDIR /docker/snort3/build
+WORKDIR /docker/snort3-3.1.0.0/build
 RUN make && make install
 RUN rm -rf /docker
 WORKDIR /root
